@@ -26,6 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+val PrimaryColor = Color(0xFF3498DB)
+val PrimaryVariantColor = Color(0xFF2980B9)
+val BackgroundColor = Color(0xFFF5F5F5)
+val CardColor = Color.White
+val TextColor = Color(0xFF2C3E50)
+
 @Composable
 fun UserScreen(
     viewModel: UserViewModel = hiltViewModel()
@@ -36,17 +42,8 @@ fun UserScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF7986CB), // Azul-púrpura
-                        Color(0xFF5C6BC0),
-                        Color(0xFF7986CB)
-                    )
-                )
-            )
+            .background(color = BackgroundColor)
     ) {
-        // Decoraciones de fondo (círculos y formas)
         Canvas(modifier = Modifier.fillMaxSize())
 
         Column(
@@ -57,14 +54,13 @@ fun UserScreen(
         ) {
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Card principal del formulario
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(0.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = CardColor
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
@@ -74,19 +70,17 @@ fun UserScreen(
                         .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Título
                     Text(
-                        text = "Contáctanos",
+                        text = "CONTÁCTANOS",
                         style = MaterialTheme.typography.headlineMedium.copy(
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.Black,
                             fontSize = 28.sp
                         ),
-                        color = Color(0xFF2C3E50)
+                        color = TextColor
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Campo: Nombre
                     StyledTextField(
                         value = formState.name,
                         onValueChange = { viewModel.onNameChange(it) },
@@ -97,7 +91,6 @@ fun UserScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Campo: Email
                     StyledTextField(
                         value = formState.email,
                         onValueChange = { viewModel.onEmailChange(it) },
@@ -109,7 +102,6 @@ fun UserScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Campo: Edad
                     StyledTextField(
                         value = formState.age,
                         onValueChange = { viewModel.onAgeChange(it) },
@@ -121,18 +113,17 @@ fun UserScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Botón Guardar
                     Button(
                         onClick = { viewModel.saveUser() },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .height(36.dp),
                         enabled = !formState.isSaving,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF5C6BC0),
-                            disabledContainerColor = Color(0xFF9FA8DA)
+                            containerColor = PrimaryColor,
+                            disabledContainerColor = PrimaryVariantColor.copy(alpha = 0.5f)
                         ),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(0.dp)
                     ) {
                         if (formState.isSaving) {
                             CircularProgressIndicator(
@@ -155,23 +146,21 @@ fun UserScreen(
                         }
                     }
 
-                    // Mensajes de error
                     formState.errorMessage?.let { error ->
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = error,
-                            color = Color(0xFFE53935),
+                            color = Color(0xFFE74C3C),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium
                         )
                     }
 
-                    // Mensajes de éxito
                     formState.successMessage?.let { success ->
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = success,
-                            color = Color(0xFF43A047),
+                            color = Color(0xFF2ECC71),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium
                         )
@@ -181,15 +170,14 @@ fun UserScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Lista de usuarios
             if (users.isNotEmpty()) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    shape = RoundedCornerShape(24.dp),
+                    shape = RoundedCornerShape(0.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White.copy(alpha = 0.95f)
+                        containerColor = CardColor.copy(alpha = 0.95f)
                     )
                 ) {
                     Column(
@@ -198,16 +186,16 @@ fun UserScreen(
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = "Usuarios (${users.size})",
+                            text = "Usuarios Registrados (${users.size})",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF2C3E50),
+                            fontWeight = FontWeight.Black,
+                            color = TextColor,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
 
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             items(users) { user ->
                                 ModernUserItem(user = user)
@@ -235,14 +223,14 @@ fun StyledTextField(
         placeholder = {
             Text(
                 text = placeholder,
-                color = Color(0xFFB0BEC5)
+                color = Color(0xFFBDC3C7)
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = icon,
                 contentDescription = placeholder,
-                tint = Color(0xFF90A4AE)
+                tint = PrimaryColor
             )
         },
         modifier = Modifier
@@ -252,14 +240,14 @@ fun StyledTextField(
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFFF5F5F5),
-            unfocusedContainerColor = Color(0xFFF5F5F5),
-            disabledContainerColor = Color(0xFFEEEEEE),
-            focusedIndicatorColor = Color.Transparent,
+            focusedContainerColor = BackgroundColor,
+            unfocusedContainerColor = BackgroundColor,
+            disabledContainerColor = BackgroundColor.copy(alpha = 0.5f),
+            focusedIndicatorColor = PrimaryColor,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(0.dp)
     )
 }
 
@@ -267,38 +255,32 @@ fun StyledTextField(
 fun ModernUserItem(user: com.sena.projectroom.data.local.UserEntity) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
+            containerColor = BackgroundColor
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Avatar circular
             Box(
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
                     .background(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF7986CB),
-                                Color(0xFF5C6BC0)
-                            )
-                        )
+                        color = PrimaryVariantColor
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = user.name.firstOrNull()?.uppercase() ?: "U",
                     color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
 
@@ -311,7 +293,7 @@ fun ModernUserItem(user: com.sena.projectroom.data.local.UserEntity) {
                     text = user.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF2C3E50)
+                    color = TextColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
@@ -321,13 +303,13 @@ fun ModernUserItem(user: com.sena.projectroom.data.local.UserEntity) {
                         imageVector = Icons.Default.DateRange,
                         contentDescription = "Edad",
                         modifier = Modifier.size(16.dp),
-                        tint = Color(0xFF7986CB)
+                        tint = PrimaryColor
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "${user.age} años",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF546E7A)
+                        color = TextColor.copy(alpha = 0.8f)
                     )
                 }
                 Spacer(modifier = Modifier.height(2.dp))
@@ -338,13 +320,13 @@ fun ModernUserItem(user: com.sena.projectroom.data.local.UserEntity) {
                         imageVector = Icons.Default.Email,
                         contentDescription = "Email",
                         modifier = Modifier.size(16.dp),
-                        tint = Color(0xFF7986CB)
+                        tint = PrimaryColor
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = user.email,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFF78909C)
+                        color = TextColor.copy(alpha = 0.6f)
                     )
                 }
             }
@@ -354,8 +336,6 @@ fun ModernUserItem(user: com.sena.projectroom.data.local.UserEntity) {
 
 @Composable
 fun Canvas(modifier: Modifier = Modifier) {
-    // Decoraciones de fondo similares a la imagen
     Box(modifier = modifier) {
-        // Puedes agregar formas decorativas aquí si quieres
     }
 }
